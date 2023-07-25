@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../blocs/theme/theme_cubit.dart';
 
 class LoadedWidget extends StatelessWidget {
   final String answer;
@@ -9,19 +12,22 @@ class LoadedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeCubit = context.watch<ThemeCubit>();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Stack(
           alignment: Alignment.center,
           children: [
-            const Image(image: AssetImage('assets/loading_ball.png')),
+            themeCubit.isLight
+                ? const Image(image: AssetImage('assets/light_loading.png'))
+                : const Image(image: AssetImage('assets/loading_ball.png')),
             Text(
               answer,
               style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

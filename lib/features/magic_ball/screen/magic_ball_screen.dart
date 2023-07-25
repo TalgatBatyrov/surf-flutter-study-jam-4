@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:surf_practice_magic_ball/features/magic_ball/bloc/magic_ball_cubit.dart';
 import 'package:shake/shake.dart';
 
+import '../blocs/magic_ball/magic_ball_cubit.dart';
+import '../blocs/theme/theme_cubit.dart';
 import '../widgets/error_widget.dart';
 import '../widgets/initial_widget.dart';
 import '../widgets/loaded_widget.dart';
@@ -32,7 +33,6 @@ class _MagicBallScreenState extends State<MagicBallScreen>
         );
 
         print('Shake!');
-        // Do stuff on phone shake
       },
       minimumShakeCount: 1,
       shakeSlopTimeMS: 500,
@@ -55,20 +55,37 @@ class _MagicBallScreenState extends State<MagicBallScreen>
 
   @override
   Widget build(BuildContext context) {
+    final themeCubit = context.watch<ThemeCubit>();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Magic Ball'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<ThemeCubit>().toggleTheme();
+            },
+            icon: const Icon(Icons.brightness_4_outlined),
+          )
+        ],
+      ),
       body: GestureDetector(
         onTap: () {
           context.read<MagicBallCubit>().getMagicBall();
         },
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Color.fromRGBO(16, 12, 43, 1),
-                Color.fromRGBO(3, 3, 10, 1)
-              ],
+              colors: themeCubit.isLight
+                  ? [
+                      const Color.fromRGBO(253, 253, 255, 1),
+                      const Color.fromRGBO(213, 213, 255, 1)
+                    ]
+                  : [
+                      const Color.fromRGBO(16, 12, 43, 1),
+                      const Color.fromRGBO(3, 3, 10, 1)
+                    ],
             ),
           ),
           child: AnimatedBuilder(
