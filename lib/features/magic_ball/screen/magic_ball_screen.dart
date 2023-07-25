@@ -31,8 +31,6 @@ class _MagicBallScreenState extends State<MagicBallScreen>
             content: Text('Shake!'),
           ),
         );
-
-        print('Shake!');
       },
       minimumShakeCount: 1,
       shakeSlopTimeMS: 500,
@@ -58,13 +56,17 @@ class _MagicBallScreenState extends State<MagicBallScreen>
     final themeCubit = context.watch<ThemeCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Magic Ball'),
+        elevation: 0,
+        backgroundColor: themeCubit.isLight
+            ? const Color.fromRGBO(253, 253, 255, 1)
+            : const Color.fromRGBO(16, 12, 43, 1),
         actions: [
           IconButton(
             onPressed: () {
               context.read<ThemeCubit>().toggleTheme();
             },
-            icon: const Icon(Icons.brightness_4_outlined),
+            icon: const Icon(Icons.brightness_4_outlined,
+                color: Color.fromRGBO(114, 114, 114, 1)),
           )
         ],
       ),
